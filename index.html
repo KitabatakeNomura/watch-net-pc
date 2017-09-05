@@ -10,6 +10,8 @@
 		.yellow {background: #ffff8d;}
 		.blue {background: #84ffff;}
 		.red {background: #ff8a80;}
+		md-grid-list md-grid-tile md-grid-tile-header {height: 20px;}
+		.room {margin: auto;}
 	</style>
 </head>
 <body ng-app="WatchNetPc" ng-cloak>
@@ -18,30 +20,51 @@
   -->  
 	<div ng-controller="AppCtr" ng-cloak>
 
-		<md-grid-list md-cols="4" md-gutter="1em" md-row-height="4:3">
+		<md-grid-list md-cols="4" md-gutter="1em" md-row-height="12:5">
 			<md-grid-tile class="gray" md-rowspan="2" md-colspan="2">
-				<md-grid-tile-header>
+				<md-grid-tile-header class="room">
 					BoF
 				</md-grid-tile-header>
 				<ul>
-					<li ng-repeat="u in ap1">{{u}}</li>
+					<li ng-repeat="u in bof">{{u}}</li>
 				</ul>
 			</md-grid-tile>
 			<md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
-				board
+				<md-grid-tile-header>
+					BOARD
+				</md-grid-tile-header>
+				<ul>
+					<li ng-repeat="u in board">{{u}}</li>
+				</ul>
 			</md-grid-tile>
 			<md-grid-tile class="red" md-rowspan="1" md-colspan="4">
-				corridor
+				<md-grid-tile-header>
+					CORRIDOR
+				</md-grid-tile-header>
+				<ul>
+					<li ng-repeat="u in corridor">{{u}}</li>
+				</ul>
 			</md-grid-tile>
 			<md-grid-tile class="blue" md-rowspan="2" md-colspan="2">
-				plenary
+				<md-grid-tile-header>
+					PLENARY
+				</md-grid-tile-header>
+				<ul>
+					<li ng-repeat="u in plenary">{{u}}</li>
+				</ul>
 			</md-grid-tile>
 			<md-grid-tile class="green" md-rowspan="2" md-colspan="2">
-				hall
+				<md-grid-tile-header>
+					HALL
+				</md-grid-tile-header>
+				<ul>
+					<li ng-repeat="u in hall">{{u}}</li>
+				</ul>
 			</md-grid-tile>
-			
 		</md-grid-list>
-
+	</div>
+	<div>
+		<a href = "subscribe.html">登録</a>
 	</div>
 
 
@@ -63,31 +86,27 @@
     angular.module('WatchNetPc', ['ngMaterial'])
 			.controller('AppCtr', function($scope, $http, $interval){
 
+				$scope.bof = [];
+				$scope.plenary = [];
+				$scope.corridor = [];
+				$scope.board = [];
+				$scope.hall = [];
+
 				function getData(){
-					$http.get('data/data.json')
-						.success(function(data){
-							$scope.ap1 = data.ap1.assoc;
-							
-							console.log(data.ap1.assoc);
-
-						})
-						.error(function(data, status, headers, config){
-							$scope.result = "miss!";
-							console.log("miss!");
-						});
+					$http({method:"GET", url:"/cgi-bin/send_data.cgi"})
+					.success(function(data){
+						// console.log(data);
+						$scope.bof = data["ap8"]["member"];
+						$scope.board = data["ap7"]["member"].concat(["ga_"]);
+						$scope.corridor = data["ap4"]["member"].concat(["su_"]);
+						$scope.plenary = data["ap5"]["member"].concat(data["ap6"]["member"]);
+						$scope.hall = data["ap1"]["member"].concat(data["ap2"]["member"]).concat(data["ap3"]["member"]);
+					})
+					.error(function(data){
+						console.log("error!")
+					});
 				}
-
-				$interval(getData, 5000);
-
-				// $scope.ap1 = ["tktbtk", "nomu"];
-				$scope.ap2 = ["ga_su_"];
-				$scope.ap3 = ["roki", "akira"];
-				$scope.ap4 = [];
-				$scope.ap5 = [];
-				$scope.ap6 = [];
-				$scope.ap7 = [];
-				$scope.ap8 = [];
-
+				$interval(getData, 1000);
 			});
 
 		

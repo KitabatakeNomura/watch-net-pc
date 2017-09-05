@@ -1,5 +1,4 @@
 from subprocess import Popen, PIPE
-import time
 import json
 import sys
 import argparse
@@ -13,7 +12,7 @@ def get_locate():
 	data["ap5"] = dict() 
 	data["ap6"] = dict() 
 	data["ap7"] = dict() 
-	data["ap8"] = dict() 
+	data["ap7"] = dict() 
 	data["ap1"]["index"] = "68:bc:0c:64:a3:f0"
 	data["ap2"]["index"] = "00:08:30:b7:6a:a0"
 	data["ap3"]["index"] = "24:b6:57:ae:f2:b0"
@@ -21,7 +20,7 @@ def get_locate():
 	data["ap5"]["index"] = "68:bc:0c:07:fc:20"
 	data["ap6"]["index"] = "68:bc:0c:a2:28:10"
 	data["ap7"]["index"] = "00:08:30:8f:25:f0"
-	data["ap8"]["index"] = "68:bc:0c:2d:e5:a0"
+	data["ap7"]["index"] = "68:bc:0c:2d:e5:a0"
 	i = 1
 	for name in data.keys():
 		data[name]["assoc"] = 0
@@ -58,8 +57,7 @@ def get_locate():
 	return json.dumps(data)
 	
 if __name__ == "__main__":
+	f = open("")
 	while True:
-		f = open("data/apassoc.json", "w")
-		f.write(get_locate())
-		print "written"
-		time.sleep(3)
+		data = get_locate()
+	print data
