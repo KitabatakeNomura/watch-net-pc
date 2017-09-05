@@ -1,0 +1,12 @@
+{
+	"ap1":{
+					"member": 3,
+					"assoc":["ktbtk", "nomu"]
+				}
+,
+
+	"ap2":{
+					"member": 10,
+					"assoc":["ga_su_", "akira", "roki"]
+				}
+}

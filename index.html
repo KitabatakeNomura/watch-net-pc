@@ -64,12 +64,22 @@
 			.controller('AppCtr', function($scope, $http, $interval){
 
 				function getData(){
-					
+					$http.get('data/data.json')
+						.success(function(data){
+							$scope.ap1 = data.ap1.assoc;
+							
+							console.log(data.ap1.assoc);
+
+						})
+						.error(function(data, status, headers, config){
+							$scope.result = "miss!";
+							console.log("miss!");
+						});
 				}
 
-				$interval(getData, 1000);
+				$interval(getData, 5000);
 
-				$scope.ap1 = ["tktbtk", "nomu"];
+				// $scope.ap1 = ["tktbtk", "nomu"];
 				$scope.ap2 = ["ga_su_"];
 				$scope.ap3 = ["roki", "akira"];
 				$scope.ap4 = [];
